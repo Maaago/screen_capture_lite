@@ -20,21 +20,39 @@ if(WIN32)
 	link_libraries(dxgi.lib d3d11.lib)
 elseif(APPLE)
 
-    set(SCREEN_CAPTURE_PLATFORM_SRC
-        ios/GetWindows.cpp 
-        ios/NSMouseCapture.m
-        ../include/ios/NSMouseCapture.h 
-        ios/NSFrameProcessor.cpp
-        ios/NSFrameProcessor.mm
-        ../include/ios/NSFrameProcessorm.h
-        ../include/ios/NSFrameProcessor.h
-        ios/NSMouseProcessor.cpp
-        ../include/ios/NSMouseProcessor.h
-        ios/CGFrameProcessor.cpp
-        ../include/ios/CGFrameProcessor.h
-        ios/GetMonitors.cpp
-        ios/ThreadRunner.cpp
-    )
+	if(false)
+		set(SCREEN_CAPTURE_PLATFORM_SRC
+			ios/core_graphics/GetWindows.cpp 
+			ios/core_graphics/NSMouseCapture.m
+			../include/ios/NSMouseCapture.h 
+			ios/core_graphics/NSFrameProcessor.cpp
+			ios/core_graphics/NSFrameProcessor.mm
+			../include/ios/NSFrameProcessorm.h
+			../include/ios/NSFrameProcessor.h
+			ios/core_graphics/NSMouseProcessor.cpp
+			../include/ios/NSMouseProcessor.h
+			ios/core_graphics/CGFrameProcessor.cpp
+			../include/ios/CGFrameProcessor.h
+			ios/core_graphics/GetMonitors.cpp
+			ios/core_graphics/ThreadRunner.cpp
+		)
+	else()
+		set(SCREEN_CAPTURE_PLATFORM_SRC
+			ios/screen_capture_kit/GetWindows.mm 
+			ios/screen_capture_kit/NSMouseCapture.m
+			../include/ios/NSMouseCapture.h 
+			ios/screen_capture_kit/NSFrameProcessor.cpp
+			ios/screen_capture_kit/NSFrameProcessor.mm
+			../include/ios/NSFrameProcessorm.h
+			../include/ios/NSFrameProcessor.h
+			ios/screen_capture_kit/NSMouseProcessor.cpp
+			../include/ios/NSMouseProcessor.h
+			ios/screen_capture_kit/CGFrameProcessor.mm
+			../include/ios/CGFrameProcessor.h
+			ios/screen_capture_kit/GetMonitors.mm
+			ios/screen_capture_kit/ThreadRunner.cpp
+		)
+	endif()
     set(SCREEN_CAPTURE_PLATFORM_INC
        ../include/ios 
     )
@@ -101,6 +119,7 @@ else()
         find_library(avfoundation_lib AVFoundation REQUIRED)
         find_library(coregraphics_lib CoreGraphics REQUIRED)
         find_library(corevideo_lib CoreVideo REQUIRED)
+        find_library(sck_lib ScreenCaptureKit REQUIRED)
        
         target_link_libraries(
            ${PROJECT_NAME}_shared
@@ -111,6 +130,7 @@ else()
             ${avfoundation_lib}
             ${coregraphics_lib}
             ${corevideo_lib}
+			${sck_lib}
         )
 	else()
 		find_package(X11 REQUIRED)
